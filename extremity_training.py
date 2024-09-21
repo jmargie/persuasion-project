@@ -42,17 +42,17 @@ test_data = [None] * 4
 for i in range(4):
     #TRAINING DATA
     train_data[i] = load_dataset("csv", data_files=datafiles[i], delimiter = '\t')
-    train_data[i] = train_data[i]['train'].\
-        map(lambda x: dict(zip(['id', 'sentence', 'emotion', 'intensity'], 
-                                x.values())))
+    train_data[i] = train_data[i]['train'].map(
+                    lambda x: dict(zip(['id', 'sentence', 'emotion', 'intensity'], 
+                           				x.values())))
     train_data[i] = train_data[i].map(lambda x: preprocess(x), batched = True)
     train_data[i] = train_data[i].remove_columns(['emotion', 'id'])
     
 	#TESTING DATA
     test_data[i] = load_dataset("csv", data_files=datafiles[i+4], delimiter = '\t')
-    test_data[i] = test_data[i]['train'].\
-        map(lambda x: dict(zip(['id', 'sentence', 'emotion', 'intensity'], 
-                                x.values())))
+    test_data[i] = test_data[i]['train'].map(
+        			lambda x: dict(zip(['id', 'sentence', 'emotion', 'intensity'], 
+                                		x.values())))
     test_data[i] = test_data[i].map(lambda x: preprocess(x), batched = True)
     test_data[i] = test_data[i].remove_columns(['emotion', 'id'])
     
