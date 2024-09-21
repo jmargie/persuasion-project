@@ -1,7 +1,0 @@
-venv/*
-logs/*
-test_trainer/*
-resultwrite.txt
-results/*
-*extremitytokenizer2/*
-*.safetensors
