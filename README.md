@@ -1,5 +1,5 @@
 ## analysis of emotion and opinions on argumentative paragraphs ## 
-# Julia Margie #
+### Julia Margie ###
 
 should be run in order:
 1. extremity_training.py
