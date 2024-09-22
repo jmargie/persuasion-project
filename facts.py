@@ -29,21 +29,21 @@ def preprocess_function(examples):
 dataset = load_dataset("fever/fever", 'wiki_pages')
 dataset = dataset.shuffle(seed=42)
 facts_dataset = dataset['wikipedia_pages'].select(range(4000))
-facts_dataset = facts_dataset.map(add_label, 1)
+facts_dataset = facts_dataset.map(add_label, fn_kwargs ={'num': 1})
 
 
 
 #JUST OPINIONS dataset and choose random
-datasetopinions = pd.read_csv("all.txt.data.txt", sep = '\t', header = 0)
+datasetopinions = pd.read_csv("data/all.txt.data.txt", sep = '\t', header = 0)
 datasetop = Dataset.from_pandas(datasetopinions) #turn into a huggingface dataset for consistency
 datasetop = datasetop.shuffle(seed=42)
 opinions_dataset = datasetop.select(range(4000))
-opinions_dataset = opinions_dataset.map(add_label, 0)
+opinions_dataset = opinions_dataset.map(add_label, fn_kwargs ={'num': 0})
 
 
 
 #dataset with BOTH labels for 
-datasetboth_orig = pd.read_csv("facts_opinions.csv", header = 0)
+datasetboth_orig = pd.read_csv("data/facts_opinions.csv", header = 0)
 datasetboth = Dataset.from_pandas(datasetboth_orig)
 datasetboth = datasetboth.shuffle(seed=42)
 datasetboth = datasetboth.select(range(4000))
@@ -61,7 +61,7 @@ data_collator1 = DataCollatorWithPadding(tokenizer=tokenizer1)
 facts_dataset.remove_columns(['id', 'lines'])
 datasetTRAIN = concatenate_datasets([facts_dataset, opinions_dataset])
 
-
+print('processed')
 # mapping with function
 train_full = datasetTRAIN.map(lambda x: preprocess_function(x), batched=True)
 test_full = datasetboth.map(lambda x: preprocess_function(x), batched=True)
@@ -70,10 +70,9 @@ training_args = TrainingArguments(
     output_dir="fact_train",
     logging_dir='./logs',
     logging_steps=10,
-    eval_strategy="epoch",
     learning_rate=2e-5,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=16,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
     num_train_epochs=3,
     weight_decay=0.01,
     gradient_accumulation_steps=4,
@@ -89,14 +88,14 @@ trainer = Trainer(
     data_collator = data_collator1
 )
 
-
+print('training')
 # train the model
 trainer.train()
 print(trainer.evaluate())
-
-model.save_pretrained("/Users/juliamargie/Documents/GitHub/persuation2/factsmodel")
+print('trained')
+model.save_pretrained("factsmodel")
 print("\n \n SAVING COMPLETE \n \n")
 
 # Save the tokenizer
-tokenizer1.save_pretrained("/Users/juliamargie/Documents/GitHub/persuation2/factstokenizer")
+tokenizer1.save_pretrained("factstokenizer")
 print("\n \n TOKENIZER COMPLETE \n \n")

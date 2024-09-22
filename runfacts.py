@@ -7,7 +7,8 @@
 #split into sentences
 import pandas as pd
 from transformers import pipeline
-import torch, spacy
+import torch
+import spacy
 
 #note: opinion = 0, fact = 1
 
@@ -25,7 +26,7 @@ punc = ['!', '.', '?', ':', '؟', '۔', '܀', '܁', '܂', '߹', '।', '॥', '�
  '𑪜', '𑱁', '𑱂', '𖩮', '𖩯', '𖫵', '𖬷', '𖬸', '𖭄', '𛲟', '𝪈', '｡', '。', ';', ' - ']
 
 #load data, model, and tokenizer
-data = pd.read_csv('data/ratings/with_scores.tsv', sep = '\t', header = 0)
+data = pd.read_csv('with_scores.tsv', sep = '\t', header = 0)
 model = 'factsmodel'
 tokenizer = 'factstokenizer'
 
@@ -49,7 +50,6 @@ def segment_clauses(text):
 # splits based on relative or auxilary clause, because those are always new ideas, 
 # whereas clausal complements and similar, would split clauses into single words, often
 # all relations from: https://universaldependencies.org/en/dep/index.html
-    print("seg")
     spacy.punct_chars = punc
     doc = english(text) #turn into sentences
     clauses = []
@@ -72,7 +72,6 @@ classifier = pipeline("text-classification", model = model, tokenizer = tokenize
 
 def count_facts(clauses):
     #function which takes a list of clauses and counts how many are facts or opinions
-    print("count")
     countf = 0
     counto = 0
     for clause in clauses:

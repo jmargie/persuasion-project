@@ -1,2 +1,11 @@
-.vscode/*
+.vscode*
 .gitattributes
+data*
+with*
+test_f.tsv
+*model
+fact_train
+extremitytokenizer*
+logs*
+test_trainer*
+factstokenizer*

@@ -30,10 +30,10 @@ def preprocess(examples):
     tokenized["labels"] = examples['intensity']
     return tokenized
 
-datafiles = ['data/anger-ratings-0to1.train.txt', 'data/joy-ratings-0to1.train.txt',
-              'data/sadness-ratings-0to1.train.txt','data/fear-ratings-0to1.train.txt',
-              'data/anger-ratings-0to1.test.txt', 'data/joy-ratings-0to1.test.txt',
-              'data/sadness-ratings-0to1.test.txt','data/fear-ratings-0to1.test.txt',]
+datafiles = ['data/ratings/anger-ratings-0to1.train.txt', 'data/ratings/joy-ratings-0to1.train.txt',
+              'data/ratings/sadness-ratings-0to1.train.txt','data/ratings/fear-ratings-0to1.train.txt',
+              'data/ratings/anger-ratings-0to1.test.gold.txt', 'data/ratings/joy-ratings-0to1.test.gold.txt',
+              'data/ratings/sadness-ratings-0to1.test.gold.txt','data/ratings/fear-ratings-0to1.test.gold.txt',]
 
 train_data = [None] * 4
 test_data = [None] * 4
@@ -124,5 +124,5 @@ models[3].save_pretrained("fearextremitymodel")
 print("\n \n SAVING COMPLETE \n \n")
 
 # save the tokenizer 
-tokenizer.save_pretrained("/Users/juliamargie/Documents/GitHub/persuation2/extremitytokenizer2")
+tokenizer.save_pretrained("extremitytokenizer")
 print("\n \n TOKENIZER COMPLETE \n \n")
